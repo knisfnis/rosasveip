@@ -1,4 +1,6 @@
-package no.sarah.sveiper;
+package no.sarah.sveiper.activity;
+import no.sarah.sveiper.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,38 +26,38 @@ public class Pause extends Activity {
 	Button menuButton;
 	Intent returnIntent;
 	Typeface font;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		font = Typeface.createFromAsset(getAssets(), "creative_block.ttf");
 
-		
+
 		buttonContainer = new LinearLayout(this);
 		container = new RelativeLayout(this);
-		
+
 		resumeButton = new Button(this);
 		restartButton = new Button(this);
 		menuButton = new Button(this);
-		
+
 		buttonContainer.setOrientation(LinearLayout.VERTICAL);
 		RelativeLayout.LayoutParams buttonContainerParams = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		buttonContainerParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		buttonContainer.setLayoutParams(buttonContainerParams);
-		
+
 		RelativeLayout.LayoutParams containerParams = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 		container.setLayoutParams(containerParams);
-		
+
 		TextView fyll1 = new TextView(this);
 		fyll1.setHeight(20);
 		TextView fyll2 = new TextView(this);
 		fyll2.setHeight(20);
 
-		
-		
-		OnTouchListener pressedListener =  new OnTouchListener() { 
+
+
+		OnTouchListener pressedListener =  new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -67,14 +69,14 @@ public class Pause extends Activity {
                 return false;
             }
 		};
-		
+
 		resumeButton.setText("Resume");
 		resumeButton.setWidth(250);
 		resumeButton.setTypeface(font);
 		resumeButton.setBackgroundResource(R.drawable.unclicked);
 		resumeButton.setTextColor(Color.parseColor("#FFFFD5F7"));
 		resumeButton.setOnTouchListener(pressedListener);
-		
+
 		restartButton.setText("Restart");
 		restartButton.setWidth(250);
 		restartButton.setTypeface(font);
@@ -93,32 +95,32 @@ public class Pause extends Activity {
 
 
 
-		
+
 		resumeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Pause.this.endActivity("resume");
 		    	}
 		});
-		
+
 		restartButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Pause.this.endActivity("restart");
 		    	}
 		});
-		
+
 		menuButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Pause.this.endActivity("menu");
 		    	}
-			
-			
-		});
-		
 
-           
+
+		});
+
+
+
 
 
 		buttonContainer.addView(resumeButton);
@@ -128,18 +130,18 @@ public class Pause extends Activity {
 		buttonContainer.addView(menuButton);
 
 		container.addView(buttonContainer);
-		
+
 		container.getRootView().setBackgroundColor(Color.parseColor("#FF310039"));
 		setContentView(container);
 	}
-	
+
 	void endActivity(String result) {
 		 Intent returnIntent = new Intent();
 		 returnIntent.putExtra("result",result);
-		 setResult(RESULT_OK,returnIntent);     
+		 setResult(RESULT_OK,returnIntent);
 		 finish();
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {

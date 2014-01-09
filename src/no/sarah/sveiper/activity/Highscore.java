@@ -1,4 +1,6 @@
-package no.sarah.sveiper;
+package no.sarah.sveiper.activity;
+
+import no.sarah.sveiper.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -33,9 +35,9 @@ public class Highscore extends Activity {
 		LinearLayout ll1 = new LinearLayout(this);
 		LinearLayout ll2 = new LinearLayout(this);
 		ll.setOrientation(LinearLayout.VERTICAL);
-			
-			
-			
+
+
+
 		highscores = getSharedPreferences("highscores", MODE_PRIVATE);
 		String highscoreEasyString1 = highscores.getString("EASY1", "Ingen rekord");
 		String highscoreEasyString2 = highscores.getString("EASY2", "Ingen rekord");
@@ -61,17 +63,17 @@ public class Highscore extends Activity {
 		scoreBoard.append("1.  "+ highscoreHardString1 + "\n");
 		scoreBoard.append("2.  "+ highscoreHardString2 + "\n");
 		scoreBoard.append("3.  "+ highscoreHardString3 + "\n");
-		
+
 		scoreBoard.setTypeface(font);
 		scoreBoard.setTextColor(Color.parseColor("#FFFFD5F7"));
 		scoreBoard.setTextSize(25);
-		
-		
+
+
 		ImageView highscore = new ImageView(this);
 		highscore.setImageResource(R.drawable.highscores);
 
 		Button backButton = new Button(this);
-		backButton.setText("Back"); 
+		backButton.setText("Back");
 		backButton.setBackgroundResource(R.drawable.gamebuttons);
 		backButton.setTypeface(font);
 		backButton.setWidth(dpToPixels(1000));

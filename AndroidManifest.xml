@@ -3,14 +3,14 @@
       package="no.sarah.sveiper"
       android:versionCode="1"
       android:versionName="1.0">
-      
-    
-    <supports-screens 
+
+
+    <supports-screens
                   android:requiresSmallestWidthDp="480"/>
-      
+
     <uses-sdk android:minSdkVersion="9"  android:targetSdkVersion="17" />
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".StartSpill"
+        <activity android:name=".activity.StartSpill"
                   android:label="@string/app_name"
                   android:screenOrientation="portrait">
             <intent-filter>
@@ -18,15 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <activity android:label="@string/app_name" android:name=".LagBrett" android:screenOrientation="portrait"/>
-        <activity android:label="@string/app_name" android:name=".GameOver" android:screenOrientation="portrait"/>
-        <activity android:label="@string/app_name" android:name=".WonTheGame" android:screenOrientation="portrait"/>
-        <activity android:label="@string/app_name" android:name=".Highscore" android:screenOrientation="portrait"/>
-        <activity android:label="@string/app_name" android:name=".Pause" android:screenOrientation="portrait"/>
-        
+        <activity android:label="@string/app_name" android:name=".activity.GameOver" android:screenOrientation="portrait"/>
+        <activity android:label="@string/app_name" android:name=".activity.WonTheGame" android:screenOrientation="portrait"/>
+        <activity android:label="@string/app_name" android:name=".activity.Highscore" android:screenOrientation="portrait"/>
+        <activity android:label="@string/app_name" android:name=".activity.Pause" android:screenOrientation="portrait"/>
+
     </application>
-    
+
 
 
 </manifest>

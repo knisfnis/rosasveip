@@ -1,4 +1,7 @@
-package no.sarah.sveiper;
+package no.sarah.sveiper.activity;
+
+import no.sarah.sveiper.LagBrett;
+import no.sarah.sveiper.R;
 
 import android.widget.RelativeLayout.LayoutParams;
 import android.app.Activity;

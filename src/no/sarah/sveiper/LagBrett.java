@@ -1,5 +1,9 @@
 package no.sarah.sveiper;
 //import android.app.ActionBar.LayoutParams;
+import no.sarah.sveiper.activity.GameOver;
+import no.sarah.sveiper.activity.Pause;
+import no.sarah.sveiper.activity.WonTheGame;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -54,19 +57,19 @@ public class LagBrett extends Activity{
 	Typeface font;
 	int fieldSize;
 
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		fieldSize = 35;
 		//saves intent for later restoration
 		thisIntent = getIntent();
-		
+
 		//hack pga. ingen getEnum, saa konverterer fra String:
 		difficulty = Difficulty.valueOf(getIntent().getExtras().getString("difficulty"));
-		
+
 		setBoardSize();
 		setNumberOfMines();
 
@@ -94,7 +97,7 @@ public class LagBrett extends Activity{
 			bredde++;
 		}
 	}
-	
+
 	//determines number of mines after board size:
 	private void setNumberOfMines() {
 		int totalNumberOfFields = hoyde*bredde;
@@ -104,7 +107,7 @@ public class LagBrett extends Activity{
 		case HARD: antallMiner=totalNumberOfFields/(int) 4; break;
 		}
 	}
-	
+
 	//creates randomized board with mines except on the first field already clicked:
 	public void setValueOfFieldsExceptOnFirstClicked(int[] firstClicked) {
 
@@ -117,7 +120,7 @@ public class LagBrett extends Activity{
 		setPointersToSurroundingFieldsForAllFields();
 		startGame();
 	}
-	
+
 	//called in method above. Stores the randomized values in the board.
 	private void setVerdier() {
 		for (int i=0; i<hoyde; i++) {
@@ -126,7 +129,7 @@ public class LagBrett extends Activity{
 			}
 		}
 	}
-	
+
 	//starts game incl. timer:
 	private void startGame() {
 		this.startTimer();
@@ -154,7 +157,7 @@ public class LagBrett extends Activity{
 			}
 		}
 	}
-	
+
 	//called when mine is clicked:
 	public void gameOver() {
 		gameIsRunning = false;
@@ -165,7 +168,7 @@ public class LagBrett extends Activity{
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 		startActivity(i);
 	}
-	
+
 	//exposes all bombs when gameOver
 	private void exposeBombs() {
 				for (int i=0; i<hoyde; i++) {
@@ -174,7 +177,7 @@ public class LagBrett extends Activity{
 			}
 		}
 	}
-	
+
 	//called when all fields but bombs are clicked:
 	public void wonTheGame() {
 		gameIsRunning = false;
@@ -191,13 +194,13 @@ public class LagBrett extends Activity{
 		overridePendingTransition(R.anim.fade_in, R.anim.slide_out_left);
 		startActivity(i);
 	}
-		
+
 	//converts density independent pixels to pixels
 	public int dpToPixels(int dp) {
 		Resources r = getResources();
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
 	}
-	
+
 	//converts pixels to density independent pixels
 	public int pixelsToDp(int pixels) {
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -205,16 +208,16 @@ public class LagBrett extends Activity{
 		float logicalDensity = metrics.density;
 		return (int) (pixels * logicalDensity + 0.5);
 	}
-	
+
 	public void IncreaseClicked() {
 		this.numberOfClickedFields++;
 	}
-	
+
 	//generates the visible board:
 	void createFieldGridView() {
 		Brettfelt felt;
 		int[] coordinates = new int[2];
-				
+
 		for (int i=0; i<hoyde; i++) {
 			LinearLayout row = new LinearLayout(this);
 			//innholdet i radene = horisontalt.
@@ -227,22 +230,22 @@ public class LagBrett extends Activity{
 				felt = new Brettfelt(this, coordinates, antallMiner, hoyde, bredde);
 				felt.setMinesLeft(minesLeftField);
 				//height/width-dp = 40
-			
-				
+
+
 				int pixels = dpToPixels(fieldSize);
 				felt.setHeight(pixels);
 				felt.setWidth(pixels);
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(pixels, pixels);
 				pixels = dpToPixels(5);
 				params.setMargins(pixels, 0, pixels, 0);
-				felt.setLayoutParams(params); 
+				felt.setLayoutParams(params);
 				row.addView(felt);
 				displayBrett[i][j] = felt;
 			}
 			board.addView(row);
 		}
 	}
-	
+
 	//instansiates all View objects:
 	void generateLayoutViews() {
 		container = new LinearLayout(this);
@@ -255,7 +258,7 @@ public class LagBrett extends Activity{
 		underHeader = new RelativeLayout(this);
 		board = new LinearLayout(this);
 	}
-	
+
 	//sets attributes of View objects:
 	void setAttributesOfViews() {
 		setOrientationOfContainers();
@@ -264,7 +267,7 @@ public class LagBrett extends Activity{
 		setUnderHeaderAttributes();
 		setBoardAttributes();
 	}
-	
+
 	//sets attributes of MinesLeftOnBoard-field
 	void setMinesLeftOnBoardAttributes() {
 		minesLeftBoard.setOrientation(LinearLayout.HORIZONTAL);
@@ -275,14 +278,14 @@ public class LagBrett extends Activity{
 		minesLeftBoard.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
 		minesLeftField.setText("X "+ antallMiner);
 	}
-	
+
 	//set orientation of LinearLayout-containers:
 	void setOrientationOfContainers() {
 		container.setOrientation(LinearLayout.VERTICAL);
 		board.setOrientation(LinearLayout.VERTICAL);
 		headerContainer.setOrientation(LinearLayout.HORIZONTAL);
 	}
-	
+
 	//sets attributes of the Header
 	void setHeaderAttributes() {
 		font = Typeface.createFromAsset(getAssets(), "creative_block.ttf");
@@ -298,7 +301,7 @@ public class LagBrett extends Activity{
 		header.setLayoutParams(headerParams);
 		headerContainer.setLayoutParams(headerContainerParams);
 	}
-	
+
 	//adds the Views to the layout:make visible
 	void addViewsToLayout() {
 		headerContainer.addView(header);
@@ -311,7 +314,7 @@ public class LagBrett extends Activity{
 		container.addView(underHeader);
 		this.setContentView(container);
 	}
-	
+
 	//sets attributes to everything below Header:
 	void setUnderHeaderAttributes() {
 		RelativeLayout.LayoutParams underHeaderParams = new RelativeLayout.LayoutParams(
@@ -319,7 +322,7 @@ public class LagBrett extends Activity{
 		underHeader.setLayoutParams(underHeaderParams);
 		underHeader.setBackgroundColor(Color.parseColor("#FF310039"));
 	}
-	
+
 	//sets attributes to the actual board:
 	void setBoardAttributes() {
 		RelativeLayout.LayoutParams boardParams = new RelativeLayout.LayoutParams(
@@ -328,20 +331,20 @@ public class LagBrett extends Activity{
 		boardParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		board.setLayoutParams(boardParams);
 	}
-	
+
 	@SuppressWarnings("deprecation") //bc is here to support S2
 	int getScreenHeight() {
 		Display display = getWindowManager().getDefaultDisplay();
 		return display.getHeight();
 	}
-	
+
 	@SuppressWarnings("deprecation") //bc is here to support S2
 	int getScreenWidth() {
 		Display display = getWindowManager().getDefaultDisplay();
 		return display.getWidth();
 	}
-	
-	
+
+
 	///////// TIMER METHODS //////////
 	public void startTimer() {
 		setUpTimer();
@@ -350,13 +353,13 @@ public class LagBrett extends Activity{
         mHandler.removeCallbacks(mUpdateTimeTask);
         mHandler.postDelayed(mUpdateTimeTask, 100);
 	}
-	
+
 	public void resumeTimer() {
         mStartTime = SystemClock.uptimeMillis();
         mHandler.postDelayed(mUpdateTimeTask, 100);
         noEDetPause = false;
 	}
-	
+
 	long time;
 	long displayTime;
 	boolean noEDetPause;
@@ -377,7 +380,7 @@ public class LagBrett extends Activity{
 		time = 0;
 		displayTime = 0;
 	}
-	
+
 	long elapseTime;
 	private void createRunnable() {
 		mUpdateTimeTask = new Runnable() {
@@ -430,7 +433,7 @@ public class LagBrett extends Activity{
 		    };
 	}
 	//////////////////////////////////
-	
+
 	static int NUMBEROFRECORDSFOREACHDIFFICULTY = 3;
 	private String getRecordType() {
 		int currentScore = getNumbersFromString((String) timer.getText());
@@ -450,10 +453,10 @@ public class LagBrett extends Activity{
 				break;
 			}
 			i++;
-		} 
+		}
 		return difficultyType;
 	}
-	
+
 	private void saveNewRecord(String recordType) {
 
 		int recordNumber = Integer.parseInt(""+recordType.charAt(recordType.length()-1));
@@ -474,28 +477,28 @@ public class LagBrett extends Activity{
         }
         ed.commit();
 	}
-	
+
 	//cleans String to contain only numbers:
 	private int getNumbersFromString(String time) {
 		return Integer.parseInt(time.replaceAll("[^\\d.]", ""));
 	}
-	
+
 	//////////PAUSE//////////////////
 	@Override
-	public void onRestart() {	
+	public void onRestart() {
 	    super.onRestart();
 	}
-	
+
 	boolean isAlreadyPauseScreen;
-	
+
 	@Override
-	public void onStop() {		
+	public void onStop() {
 	    super.onStop();
 	    if (!isAlreadyPauseScreen && gameIsRunning) {
 	    	startPause();
 	    }
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -509,7 +512,7 @@ public class LagBrett extends Activity{
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-	
+
 	public void startPause () {
 		pauseTimer();
 		Intent i = new Intent(this, Pause.class);
@@ -521,7 +524,7 @@ public class LagBrett extends Activity{
 		if (requestCode == 1) {
 			if(resultCode == RESULT_OK){
 				String result= data.getStringExtra("result");
-				
+
 				if (result.equals("resume")) {
 					this.isAlreadyPauseScreen = false;
 			    	this.resumeTimer();
@@ -531,11 +534,11 @@ public class LagBrett extends Activity{
 					this.gameIsRunning = false;
 					this.restartGame();
 				}
-				
-				
+
+
 			}
 			if (resultCode == RESULT_CANCELED) {
-				//Write your code on no result return 
+				//Write your code on no result return
 			}
 		}
 	}

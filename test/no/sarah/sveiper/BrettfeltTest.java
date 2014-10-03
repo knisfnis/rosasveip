@@ -1,7 +1,5 @@
 package no.sarah.sveiper;
 
-import org.junit.Before;
-
 /**
  * Tests for {@link Brettfelt}
  *
@@ -9,7 +7,7 @@ import org.junit.Before;
  */
 public class BrettfeltTest {
 
-    @Before
     public void setUp() {
+        //TODO: Gradle
     }
 }
